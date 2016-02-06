@@ -1,5 +1,5 @@
 class Player
-  attr_accessor :name, :player_url, :position, :height, :experience, :points_pg, :assists_pg, :rebounds_pg, :blocks_pg, :steals_pg, :minutes_pg, :fg_percentage, :three_percentage, :ft_percentage
+  attr_accessor :name, :number, :player_url, :position, :height, :experience, :points_pg, :assists_pg, :rebounds_pg, :blocks_pg, :steals_pg, :minutes_pg, :fg_percentage, :three_percentage, :ft_percentage
 
   @@all = []
   def initialize(player_hash)
