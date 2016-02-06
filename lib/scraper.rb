@@ -1,11 +1,11 @@
 class Scraper
 
-  def open_page(url)
+  def self.open_page(url)
     Nokogiri::HTML(open(url))
   end
 
-  #Creates an array of hashes with current team names and links to 2015-16 team page
-  def get_teams
+  # Returns an array of hashes with current team names and links to 2015-16 team page
+  def self.get_teams
     page = open_page("http://www.basketball-reference.com/teams")
     teams_array = []
     teams = page.css("table#active tr.full_table a")
@@ -17,4 +17,5 @@ class Scraper
     end
     teams_array
   end
+
 end
