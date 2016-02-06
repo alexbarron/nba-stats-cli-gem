@@ -1,5 +1,6 @@
 require_relative "../lib/scraper.rb"
 require_relative "../lib/team.rb"
+require_relative "../lib/player.rb"
 
 class NbaStatsCli
   
@@ -8,7 +9,7 @@ class NbaStatsCli
     puts "Here's the list of current teams"
     make_teams
     Team.all.each do |team|
-      puts team.name + ": #{team.team_url}"
+      puts team.name
     end
   end
 

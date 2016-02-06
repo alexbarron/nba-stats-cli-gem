@@ -1,6 +1,6 @@
 class Team
   
-  attr_accessor :name, :team_url, :roster
+  attr_accessor :name, :team_url, :players
 
   @@all = []
 
@@ -8,7 +8,13 @@ class Team
     team_hash.each do |key, value|
       self.send("#{key}=", value)
     end
+    @players = []
     @@all << self
+  end
+
+  def add_players
+    players_array = Scraper.get_roster(self)
+    Player.create_from_collection_with_team(players_array, self)
   end
 
   def self.create_from_collection(teams_array)

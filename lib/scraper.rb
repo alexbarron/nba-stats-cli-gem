@@ -22,7 +22,7 @@ class Scraper
     page = open_page(team.team_url)
     players_array = []
     players = page.css("table#roster tr")
-    players.each do |player|
+    players.drop(1).each do |player|
       data_array = player.text.split("\n").map {|x| x.strip}
       number = data_array[1]
       name = data_array[2]
