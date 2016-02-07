@@ -41,5 +41,30 @@ class Scraper
     players_array
   end
 
+  def self.get_player_stats(player)
+    headers = page.css("table#per_game thead")
+    header_text = headers.text.gsub("\n", "")
+    header_text = header_text.strip
+
+    season = page.css("table#per_game tr.full_table").last
+
+    season_stats = season.text.gsub("\n", "").strip
+
+    header_array = header_text.split("   ")
+    stats_array = season_stats.split("   ")
+
+    stats_hash = {
+      points_pg: stats_array[29], 
+      assists_pg: stats_array[24], 
+      rebounds_pg: stats_array[23], 
+      blocks_pg: stats_array[26], 
+      steals_pg: stats_array[25], 
+      minutes_pg: stats_array[7], 
+      fg_percentage: stats_array[10], 
+      three_percentage: stats_array[13], 
+      ft_percentage: stats_array[20]
+    }
+
+  end
 
 end
