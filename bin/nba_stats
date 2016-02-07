@@ -2,4 +2,4 @@
 
 require_relative '../config/environment'
 
-NbaStatsCli.start
+NbaStatsCli.new.start

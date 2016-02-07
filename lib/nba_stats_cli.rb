@@ -4,13 +4,41 @@ require_relative "../lib/player.rb"
 
 class NbaStatsCli
   
-  def self.start
+  def initialize
+  end
+
+  def start
     puts "Welcome to the NBA Stats CLI Gem"
     puts "Here's the list of current teams"
     make_teams
     Team.all.each do |team|
       puts team.name
     end
+
+    choose_team
+    choose_player
+
+    puts "Do you want to look up another player on this team? y/n"
+    response = gets.strip
+    while response == "y"
+      choose_player
+      puts "Do you want to look up another player on this team? y/n"
+      response = gets.strip
+    end
+
+    puts "Do you want to look up another team? y/n"
+    response = gets.strip
+    if response == "y"
+      start
+    end
+  end
+
+  def make_teams
+    teams_array = Scraper.get_teams
+    Team.create_from_collection(teams_array)
+  end
+
+  def choose_team
     puts "Enter a team name to see their roster: "
     requested_team = gets.strip
     team = Team.all.detect {|team| team.name == requested_team}
@@ -22,7 +50,9 @@ class NbaStatsCli
     end
     roster_table = Terminal::Table.new rows: rows
     puts roster_table
+  end
 
+  def choose_player
     puts "Enter a player name to see their individual stats: "
     requested_player = gets.strip
     player = Player.all.detect {|player| player.name == requested_player}
@@ -33,11 +63,6 @@ class NbaStatsCli
     puts "Here are #{player.name}'s 2015-16 stats: "
     stats_table = Terminal::Table.new rows: rows
     puts stats_table
-  end
-
-  def self.make_teams
-    teams_array = Scraper.get_teams
-    Team.create_from_collection(teams_array)
   end
 
 end
