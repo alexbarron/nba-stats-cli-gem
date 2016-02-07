@@ -27,4 +27,8 @@ class Team
     @@all
   end
 
+  def self.team_names
+    @@all.collect {|team| team.name }
+  end
+
 end

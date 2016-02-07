@@ -41,6 +41,10 @@ class NbaStatsCli
   def choose_team
     puts "Enter a team name to see their roster: "
     requested_team = gets.strip
+    while !Team.team_names.include? requested_team
+      puts "That team doesn't exist. Try again."
+      requested_team = gets.strip
+    end
     team = Team.all.detect {|team| team.name == requested_team}
     team.add_players
     puts team.name + " roster:"
@@ -55,6 +59,10 @@ class NbaStatsCli
   def choose_player
     puts "Enter a player name to see their individual stats: "
     requested_player = gets.strip
+    while !Player.player_names.include? requested_player
+      puts "That player isn't on this team. Try again."
+      requested_player = gets.strip
+    end
     player = Player.all.detect {|player| player.name == requested_player}
     stats_hash = Scraper.get_player_stats(player)
     player.add_player_stats(stats_hash)

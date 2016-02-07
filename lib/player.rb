@@ -29,8 +29,11 @@ class Player
     end
   end
 
-
   def self.all
     @@all
+  end
+
+  def self.player_names
+    @@all.collect {|player| player.name}
   end
 end
