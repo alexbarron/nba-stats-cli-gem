@@ -42,16 +42,10 @@ class Scraper
   end
 
   def self.get_player_stats(player)
-    headers = page.css("table#per_game thead")
-    header_text = headers.text.gsub("\n", "")
-    header_text = header_text.strip
+    page = open_page(player.player_url)
 
     season = page.css("table#per_game tr.full_table").last
-
-    season_stats = season.text.gsub("\n", "").strip
-
-    header_array = header_text.split("   ")
-    stats_array = season_stats.split("   ")
+    stats_array = season.text.gsub("\n", "").strip.split("   ")
 
     stats_hash = {
       points_pg: stats_array[29], 

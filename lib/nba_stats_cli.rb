@@ -20,8 +20,19 @@ class NbaStatsCli
     team.players.each do |player|
       rows << [player.number, player.name, player.position, player.height, player.experience]
     end
-    table = Terminal::Table.new rows: rows
-    puts table
+    roster_table = Terminal::Table.new rows: rows
+    puts roster_table
+
+    puts "Enter a player name to see their individual stats: "
+    requested_player = gets.strip
+    player = Player.all.detect {|player| player.name == requested_player}
+    stats_hash = Scraper.get_player_stats(player)
+    player.add_player_stats(stats_hash)
+    rows = [["Points/Game", "Assists/Game", "Rebounds/Game", "Blocks/Game", "Steals/Game", "FG%", "3P%", "FT%", "Minutes/Game",]]
+    rows << [player.points_pg, player.assists_pg, player.rebounds_pg, player.blocks_pg, player.steals_pg, player.fg_percentage, player.three_percentage, player.ft_percentage, player.minutes_pg]
+    puts "Here are #{player.name}'s 2015-16 stats: "
+    stats_table = Terminal::Table.new rows: rows
+    puts stats_table
   end
 
   def self.make_teams

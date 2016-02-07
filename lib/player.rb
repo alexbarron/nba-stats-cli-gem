@@ -23,6 +23,12 @@ class Player
     end
   end
 
+  def add_player_stats(stats_hash)
+    stats_hash.each do |key,value|
+      self.send("#{key}=", value)
+    end
+  end
+
 
   def self.all
     @@all
