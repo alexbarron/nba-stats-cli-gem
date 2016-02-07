@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/nba_stats'
+
+NbaStats::CLI.new.call

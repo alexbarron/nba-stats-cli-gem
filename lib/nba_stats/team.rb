@@ -1,4 +1,4 @@
-class Team
+class NbaStats::Team
   
   attr_accessor :name, :team_url, :players
 
@@ -13,13 +13,13 @@ class Team
   end
 
   def add_players
-    players_array = Scraper.get_roster(self)
-    Player.create_from_collection_with_team(players_array, self)
+    players_array = NbaStats::Scraper.get_roster(self)
+    NbaStats::Player.create_from_collection_with_team(players_array, self)
   end
 
   def self.create_from_collection(teams_array)
     teams_array.each do |team|
-      new_team = Team.new(team)
+      new_team = NbaStats::Team.new(team)
     end
   end
 

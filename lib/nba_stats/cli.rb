@@ -1,17 +1,14 @@
-require_relative "../lib/scraper.rb"
-require_relative "../lib/team.rb"
-require_relative "../lib/player.rb"
-
-class NbaStatsCli
+class NbaStats::CLI
   
-  def initialize
+  def call
+    start
   end
 
   def start
     puts "Welcome to the NBA Stats CLI Gem"
     puts "Here's the list of current teams"
     make_teams
-    Team.all.each do |team|
+    NbaStats::Team.all.each do |team|
       puts team.name
     end
 
@@ -34,18 +31,18 @@ class NbaStatsCli
   end
 
   def make_teams
-    teams_array = Scraper.get_teams
-    Team.create_from_collection(teams_array)
+    teams_array = NbaStats::Scraper.get_teams
+    NbaStats::Team.create_from_collection(teams_array)
   end
 
   def choose_team
     puts "Enter a team name to see their roster: "
     requested_team = gets.strip
-    while !Team.team_names.include? requested_team
+    while !NbaStats::Team.team_names.include? requested_team
       puts "That team doesn't exist. Try again."
       requested_team = gets.strip
     end
-    team = Team.all.detect {|team| team.name == requested_team}
+    team = NbaStats::Team.all.detect {|team| team.name == requested_team}
     team.add_players
     puts team.name + " roster:"
     rows = [["Number", "Name", "Position", "Height", "Experience"]]
@@ -59,12 +56,12 @@ class NbaStatsCli
   def choose_player
     puts "Enter a player name to see their individual stats: "
     requested_player = gets.strip
-    while !Player.player_names.include? requested_player
+    while !NbaStats::Player.player_names.include? requested_player
       puts "That player isn't on this team. Try again."
       requested_player = gets.strip
     end
-    player = Player.all.detect {|player| player.name == requested_player}
-    stats_hash = Scraper.get_player_stats(player)
+    player = NbaStats::Player.all.detect {|player| player.name == requested_player}
+    stats_hash = NbaStats::Scraper.get_player_stats(player)
     player.add_player_stats(stats_hash)
     rows = [["Points/Game", "Assists/Game", "Rebounds/Game", "Blocks/Game", "Steals/Game", "FG%", "3P%", "FT%", "Minutes/Game",]]
     rows << [player.points_pg, player.assists_pg, player.rebounds_pg, player.blocks_pg, player.steals_pg, player.fg_percentage, player.three_percentage, player.ft_percentage, player.minutes_pg]

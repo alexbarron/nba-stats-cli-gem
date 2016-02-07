@@ -1,4 +1,4 @@
-class Scraper
+class NbaStats::Scraper
 
   def self.open_page(url)
     Nokogiri::HTML(open(url))
