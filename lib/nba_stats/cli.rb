@@ -8,9 +8,19 @@ class NbaStats::CLI
     puts "Welcome to the NBA Stats CLI Gem"
     puts "Here's the list of current teams"
     make_teams
-    NbaStats::Team.all.each do |team|
-      puts team.name
+
+    rows = [["Eastern Conference", "Western Conference"]]
+    west_teams = NbaStats::Team.western_names
+    east_teams = NbaStats::Team.eastern_names
+
+    i = 0
+    while i < 15
+      rows << [east_teams[i], west_teams[i]]
+      i += 1
     end
+
+    team_table = Terminal::Table.new rows: rows
+    puts team_table
 
     choose_team
     choose_player

@@ -1,6 +1,6 @@
 class NbaStats::Team
   
-  attr_accessor :name, :team_url, :players
+  attr_accessor :name, :team_url, :players, :conference
 
   @@all = []
 
@@ -29,6 +29,16 @@ class NbaStats::Team
 
   def self.team_names
     @@all.collect {|team| team.name }
+  end
+
+  def self.western_names
+    west = @@all.select {|team| team.conference == "West"}
+    names = west.collect {|team| team.name}.sort
+  end
+
+  def self.eastern_names
+    east = @@all.select {|team| team.conference == "East"}
+    east.collect {|team| team.name}.sort
   end
 
 end

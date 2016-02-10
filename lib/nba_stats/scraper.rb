@@ -6,16 +6,28 @@ class NbaStats::Scraper
 
   # Returns an array of hashes with current team names and links to 2015-16 team page
   def self.get_teams
-    page = open_page("http://www.basketball-reference.com/teams")
+    page = open_page("http://www.basketball-reference.com/leagues/NBA_2016_standings.html")
+
     teams_array = []
-    teams = page.css("table#active tr.full_table a")
-    teams.each do |team|
+
+    east_teams = page.css("table#E_standings td a")
+    east_teams.each do |team|
       name = team.text
-      team_url = "http://www.basketball-reference.com"+ team["href"] + "2016.html"
-      hash = {name: name, team_url: team_url}
-      teams_array << hash
+      team_url = "http://www.basketball-reference.com"+ team["href"]
+      hash = {name: name, team_url: team_url, conference: "East"}
+      teams_array << hash unless teams_array.include? hash
     end
+
+    west_teams = page.css("table#W_standings td a")
+    west_teams.each do |team|
+      name = team.text
+      team_url = "http://www.basketball-reference.com"+ team["href"]
+      hash = {name: name, team_url: team_url, conference: "West"}
+      teams_array << hash unless teams_array.include? hash
+    end
+
     teams_array
+
   end
 
   def self.get_roster(team)
