@@ -6,7 +6,9 @@ class NbaStats::CLI
 
   def start
     puts "Welcome to the NBA Stats CLI Gem"
+    puts "To get started, input one of the team names below to load their roster." 
     puts "Here's the list of current teams"
+
     make_teams
 
     rows = [["Eastern Conference", "Western Conference"]]
@@ -47,11 +49,13 @@ class NbaStats::CLI
 
   def choose_team
     puts "Enter a team name to see their roster: "
+
     requested_team = gets.strip
     while !NbaStats::Team.team_names.include? requested_team
       puts "That team doesn't exist. Try again."
       requested_team = gets.strip
     end
+
     team = NbaStats::Team.all.detect {|team| team.name == requested_team}
     team.add_players
     puts team.name + " roster:"

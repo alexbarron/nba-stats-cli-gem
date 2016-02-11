@@ -2,8 +2,8 @@ Gem::Specification.new do |s|
   s.name        = 'nba-stats'
   s.version     = '0.1.2'
   s.date        = '2016-02-07'
-  s.summary     = "NBA Stats"
-  s.description = "A command line interface for looking 2015-16 NBA player stats"
+  s.summary     = "Lookup NBA Player Stats"
+  s.description = "A command line interface for looking up 2015-16 NBA player stats"
   s.authors     = ["Alex Barron"]
   s.email       = 'alexbarron@gmail.com'
   s.files       = ["lib/nba_stats.rb", "lib/nba_stats/cli.rb", "lib/nba_stats/player.rb", "lib/nba_stats/team.rb", "lib/nba_stats/scraper.rb", "config/environment.rb"]

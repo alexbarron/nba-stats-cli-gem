@@ -2,6 +2,7 @@ class NbaStats::Player
   attr_accessor :name, :team, :number, :player_url, :position, :height, :experience, :points_pg, :assists_pg, :rebounds_pg, :blocks_pg, :steals_pg, :minutes_pg, :fg_percentage, :three_percentage, :ft_percentage
 
   @@all = []
+  
   def initialize(player_hash)
     player_hash.each do |key, value|
       self.send("#{key}=", value)

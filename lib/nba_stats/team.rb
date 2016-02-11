@@ -33,7 +33,7 @@ class NbaStats::Team
 
   def self.western_names
     west = @@all.select {|team| team.conference == "West"}
-    names = west.collect {|team| team.name}.sort
+    west.collect {|team| team.name}.sort
   end
 
   def self.eastern_names
