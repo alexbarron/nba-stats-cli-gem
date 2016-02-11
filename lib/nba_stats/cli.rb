@@ -1,15 +1,16 @@
 class NbaStats::CLI
   
   def call
+    puts "Welcome to the NBA Stats CLI Gem"
     start
   end
 
   def start
-    puts "Welcome to the NBA Stats CLI Gem"
-    puts "To get started, input one of the team names below to load their roster." 
+    puts "Input one of the team names below to load their roster."
+    puts "Input exit to leave this program."
     puts "Here's the list of current teams"
 
-    make_teams
+    make_teams if NbaStats::Team.all.empty?
 
     rows = [["Eastern Conference", "Western Conference"]]
     west_teams = NbaStats::Team.western_names
@@ -24,21 +25,24 @@ class NbaStats::CLI
     team_table = Terminal::Table.new rows: rows
     puts team_table
 
-    choose_team
-    choose_player
-
-    puts "Do you want to look up another player on this team? y/n"
-    response = gets.strip
-    while response == "y"
-      choose_player
-      puts "Do you want to look up another player on this team? y/n"
-      response = gets.strip
-    end
-
-    puts "Do you want to look up another team? y/n"
-    response = gets.strip
-    if response == "y"
-      start
+    input = ""
+    while input != "exit"
+      puts "Input a team name to see their roster: "
+      input = gets.strip
+      if NbaStats::Team.team_names.include? input
+        display_roster(input)
+        puts "Input a player name to see their individual stats: "
+        input = gets.strip
+        while NbaStats::Player.player_names.include? input
+          display_player_stats(input)
+          puts "Input another player name from this team to see their stats."
+          puts "Or input change teams to see another team's roster."
+          input = gets.strip
+          if input == "change teams"
+            start
+          end
+        end
+      end
     end
   end
 
@@ -47,15 +51,7 @@ class NbaStats::CLI
     NbaStats::Team.create_from_collection(teams_array)
   end
 
-  def choose_team
-    puts "Enter a team name to see their roster: "
-
-    requested_team = gets.strip
-    while !NbaStats::Team.team_names.include? requested_team
-      puts "That team doesn't exist. Try again."
-      requested_team = gets.strip
-    end
-
+  def display_roster(requested_team)
     team = NbaStats::Team.all.detect {|team| team.name == requested_team}
     team.add_players
     puts team.name + " roster:"
@@ -67,13 +63,7 @@ class NbaStats::CLI
     puts roster_table
   end
 
-  def choose_player
-    puts "Enter a player name to see their individual stats: "
-    requested_player = gets.strip
-    while !NbaStats::Player.player_names.include? requested_player
-      puts "That player isn't on this team. Try again."
-      requested_player = gets.strip
-    end
+  def display_player_stats(requested_player)
     player = NbaStats::Player.all.detect {|player| player.name == requested_player}
     stats_hash = NbaStats::Scraper.get_player_stats(player)
     player.add_player_stats(stats_hash)

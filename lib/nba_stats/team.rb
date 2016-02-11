@@ -9,7 +9,7 @@ class NbaStats::Team
       self.send("#{key}=", value)
     end
     @players = []
-    @@all << self
+    @@all << self unless @@all.include? self
   end
 
   def add_players
@@ -19,7 +19,7 @@ class NbaStats::Team
 
   def self.create_from_collection(teams_array)
     teams_array.each do |team|
-      new_team = NbaStats::Team.new(team)
+      new_team = NbaStats::Team.new(team) unless @@all.include? team
     end
   end
 
