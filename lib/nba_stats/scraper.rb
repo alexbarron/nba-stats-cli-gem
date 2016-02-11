@@ -4,30 +4,24 @@ class NbaStats::Scraper
     Nokogiri::HTML(open(url))
   end
 
-  # Returns an array of hashes with current team names and links to 2015-16 team page
   def self.get_teams
     page = open_page("http://www.basketball-reference.com/leagues/NBA_2016_standings.html")
 
-    teams_array = []
-
     east_teams = page.css("table#E_standings td a")
-    east_teams.each do |team|
-      name = team.text
-      team_url = "http://www.basketball-reference.com"+ team["href"]
-      hash = {name: name, team_url: team_url, conference: "East"}
-      teams_array << hash unless teams_array.include? hash
-    end
-
     west_teams = page.css("table#W_standings td a")
-    west_teams.each do |team|
+
+    assign_teams(west_teams, "West") + assign_teams(east_teams, "East")
+  end
+
+  def self.assign_teams(teams, conference)
+    assigned_teams = []
+    teams.each do |team|
       name = team.text
       team_url = "http://www.basketball-reference.com"+ team["href"]
-      hash = {name: name, team_url: team_url, conference: "West"}
-      teams_array << hash unless teams_array.include? hash
+      hash = {name: name, team_url: team_url, conference: conference}
+      assigned_teams << hash unless assigned_teams.include? hash
     end
-
-    teams_array
-
+    assigned_teams
   end
 
   def self.get_roster(team)
