@@ -38,8 +38,10 @@ class NbaStats::CLI
           puts "Input another player name from this team to see their stats."
           puts "Or input change teams to see another team's roster."
           input = gets.strip
-          if input == "change teams"
+          if input == "change teams" || input == "change team"
             start
+          elsif input == "exit"
+            break
           end
         end
       end
@@ -53,7 +55,7 @@ class NbaStats::CLI
 
   def display_roster(requested_team)
     team = NbaStats::Team.all.detect {|team| team.name == requested_team}
-    team.add_players
+    team.add_players if team.players.empty?
     puts team.name + " roster:"
     rows = [["Number", "Name", "Position", "Height", "Experience"]]
     team.players.each do |player|
