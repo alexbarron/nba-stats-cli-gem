@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Alex Barron"]
   s.email       = 'alexbarron@gmail.com'
   s.files       = ["lib/nba_stats.rb", "lib/nba_stats/cli.rb", "lib/nba_stats/player.rb", "lib/nba_stats/team.rb", "lib/nba_stats/scraper.rb", "config/environment.rb"]
-  s.homepage    = 'http://rubygems.org/gems/nba-stats'
+  s.homepage    = 'https://github.com/alexbarron/nba-stats-cli-gem'
   s.license     = 'MIT'
   s.executables << 'nba-stats'
 
