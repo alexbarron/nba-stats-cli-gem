@@ -29,21 +29,20 @@ class NbaStats::CLI
     while input != "exit"
       puts "Input a team name to see their roster: "
       input = gets.strip
-      if NbaStats::Team.team_names.include? input
+      if (NbaStats::Team.team_names.include? input)
         display_roster(input)
         puts "Input a player name to see their individual stats: "
         input = gets.strip
-        while NbaStats::Player.player_names.include? input
+        while (NbaStats::Player.player_names.include? input)
           display_player_stats(input)
           puts "Input another player name from this team to see their stats."
           puts "Or input change teams to see another team's roster."
           input = gets.strip
           if input == "change teams" || input == "change team"
             start
-          elsif input == "exit"
-            break
           end
         end
+        break
       end
     end
   end
