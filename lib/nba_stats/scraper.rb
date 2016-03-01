@@ -17,7 +17,7 @@ class NbaStats::Scraper
     assigned_teams = []
     teams.each do |team|
       name = team.text
-      team_url = "http://www.basketball-reference.com"+ team["href"]
+      team_url = "http://www.basketball-reference.com" + team["href"]
       hash = {name: name, team_url: team_url, conference: conference}
       assigned_teams << hash unless assigned_teams.include? hash
     end
@@ -51,7 +51,7 @@ class NbaStats::Scraper
     page = open_page(player.player_url)
 
     season = page.css("table#per_game tr.full_table").last
-    stats_array = season.text.gsub("\n", "").strip.split("   ")
+    stats_array = season.text.split("\n").map {|x| x.strip}
 
     stats_hash = {
       points_pg: stats_array[29], 

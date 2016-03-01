@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'nba-stats'
-  s.version     = '0.1.3'
+  s.version     = '0.1.4'
   s.date        = '2016-02-11'
   s.summary     = "Lookup NBA Player Stats"
   s.description = "A command line interface for looking up 2015-16 NBA player stats"

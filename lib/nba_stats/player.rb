@@ -24,7 +24,8 @@ class NbaStats::Player
     end
   end
 
-  def add_player_stats(stats_hash)
+  def add_player_stats
+    stats_hash = NbaStats::Scraper.get_player_stats(self)
     stats_hash.each do |key,value|
       self.send("#{key}=", value)
     end

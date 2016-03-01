@@ -66,8 +66,7 @@ class NbaStats::CLI
 
   def display_player_stats(requested_player)
     player = NbaStats::Player.all.detect {|player| player.name == requested_player}
-    stats_hash = NbaStats::Scraper.get_player_stats(player)
-    player.add_player_stats(stats_hash)
+    player.add_player_stats
     rows = [["Points/Game", "Assists/Game", "Rebounds/Game", "Blocks/Game", "Steals/Game", "FG%", "3P%", "FT%", "Minutes/Game",]]
     rows << [player.points_pg, player.assists_pg, player.rebounds_pg, player.blocks_pg, player.steals_pg, player.fg_percentage, player.three_percentage, player.ft_percentage, player.minutes_pg]
     puts "Here are #{player.name}'s 2015-16 stats: "

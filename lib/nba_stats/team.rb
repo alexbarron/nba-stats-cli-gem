@@ -19,7 +19,7 @@ class NbaStats::Team
 
   def self.create_from_collection(teams_array)
     teams_array.each do |team|
-      new_team = NbaStats::Team.new(team) unless @@all.include? team
+      new_team = NbaStats::Team.new(team)
     end
   end
 
