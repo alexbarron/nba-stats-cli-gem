@@ -10,20 +10,7 @@ class NbaStats::CLI
     puts "Input exit to leave this program."
     puts "Here's the list of current teams"
 
-    make_teams if NbaStats::Team.all.empty?
-
-    rows = [["Eastern Conference", "Western Conference"]]
-    west_teams = NbaStats::Team.western_names
-    east_teams = NbaStats::Team.eastern_names
-
-    i = 0
-    while i < 15
-      rows << [east_teams[i], west_teams[i]]
-      i += 1
-    end
-
-    team_table = Terminal::Table.new rows: rows
-    puts team_table
+    display_teams
 
     input = ""
     while input != "exit"
@@ -52,26 +39,47 @@ class NbaStats::CLI
     NbaStats::Team.create_from_collection(teams_array)
   end
 
+  def display_teams
+    make_teams if NbaStats::Team.all.empty?
+
+    rows = [["Eastern Conference", "Western Conference"]]
+    west_teams = NbaStats::Team.western_names
+    east_teams = NbaStats::Team.eastern_names
+
+    i = 0
+    while i < 15
+      rows << [east_teams[i], west_teams[i]]
+      i += 1
+    end
+
+    puts Terminal::Table.new rows: rows
+  end
+
   def display_roster(requested_team)
     team = NbaStats::Team.all.detect {|team| team.name == requested_team}
+
     team.add_players if team.players.empty?
+
     puts team.name + " roster:"
+
     rows = [["Number", "Name", "Position", "Height", "Experience"]]
     team.players.each do |player|
       rows << [player.number, player.name, player.position, player.height, player.experience]
     end
-    roster_table = Terminal::Table.new rows: rows
-    puts roster_table
+
+    puts Terminal::Table.new rows: rows
   end
 
   def display_player_stats(requested_player)
     player = NbaStats::Player.all.detect {|player| player.name == requested_player}
+
     player.add_player_stats
+
     rows = [["Points/Game", "Assists/Game", "Rebounds/Game", "Blocks/Game", "Steals/Game", "FG%", "3P%", "FT%", "Minutes/Game",]]
     rows << [player.points_pg, player.assists_pg, player.rebounds_pg, player.blocks_pg, player.steals_pg, player.fg_percentage, player.three_percentage, player.ft_percentage, player.minutes_pg]
+    
     puts "Here are #{player.name}'s 2015-16 stats: "
-    stats_table = Terminal::Table.new rows: rows
-    puts stats_table
+    puts Terminal::Table.new rows: rows
   end
 
 end
