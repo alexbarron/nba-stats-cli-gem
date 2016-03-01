@@ -35,11 +35,7 @@ class NbaStats::Scraper
       position = data_array[3]
       height = data_array[4]
       data_array[8] == "R" ? experience = "Rookie" : experience = data_array[8] + " Years"
-
-      #Below is messy workaround
-      #Cleaner player.css("a").first["href"] works outside of .each loop, but returns "undefined method '[]' for nil" inside .each
-      player_url = player.css("a").map {|element| element["href"]}.first
-      player_url = "http://www.basketball-reference.com" + player_url.to_s
+      player_url = "http://www.basketball-reference.com" + player.css("a").first["href"]
 
       hash = {name: name, number: number, position: position, height: height, experience: experience, player_url: player_url}
       players_array << hash
@@ -52,17 +48,16 @@ class NbaStats::Scraper
 
     season = page.css("table#per_game tr.full_table").last
     stats_array = season.text.split("\n").map {|x| x.strip}
-
     stats_hash = {
-      points_pg: stats_array[29], 
-      assists_pg: stats_array[24], 
-      rebounds_pg: stats_array[23], 
-      blocks_pg: stats_array[26], 
-      steals_pg: stats_array[25], 
-      minutes_pg: stats_array[7], 
-      fg_percentage: stats_array[10], 
-      three_percentage: stats_array[13], 
-      ft_percentage: stats_array[20]
+      points_pg: stats_array[30], 
+      assists_pg: stats_array[25], 
+      rebounds_pg: stats_array[24], 
+      blocks_pg: stats_array[27], 
+      steals_pg: stats_array[26], 
+      minutes_pg: stats_array[8], 
+      fg_percentage: stats_array[11], 
+      three_percentage: stats_array[14], 
+      ft_percentage: stats_array[21]
     }
 
   end
