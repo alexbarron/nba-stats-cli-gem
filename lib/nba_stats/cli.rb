@@ -34,25 +34,9 @@ class NbaStats::CLI
     end
   end
 
-  def make_teams
-    teams_array = NbaStats::Scraper.get_teams
-    NbaStats::Team.create_from_collection(teams_array)
-  end
-
   def display_teams
-    make_teams if NbaStats::Team.all.empty?
-
-    rows = [["Eastern Conference", "Western Conference"]]
-    west_teams = NbaStats::Team.western_names
-    east_teams = NbaStats::Team.eastern_names
-
-    i = 0
-    while i < 15
-      rows << [east_teams[i], west_teams[i]]
-      i += 1
-    end
-
-    puts Terminal::Table.new rows: rows
+    NbaStats::Scraper.new.teams
+    puts Terminal::Table.new rows: NbaStats::Team.team_rows
   end
 
   def display_roster(requested_team)
@@ -62,12 +46,7 @@ class NbaStats::CLI
 
     puts team.name + " roster:"
 
-    rows = [["Number", "Name", "Position", "Height", "Experience"]]
-    team.players.each do |player|
-      rows << [player.number, player.name, player.position, player.height, player.experience]
-    end
-
-    puts Terminal::Table.new rows: rows
+    puts Terminal::Table.new rows: team.roster_rows
   end
 
   def display_player_stats(requested_player)
@@ -75,11 +54,8 @@ class NbaStats::CLI
 
     player.add_player_stats
 
-    rows = [["Points/Game", "Assists/Game", "Rebounds/Game", "Blocks/Game", "Steals/Game", "FG%", "3P%", "FT%", "Minutes/Game",]]
-    rows << [player.points_pg, player.assists_pg, player.rebounds_pg, player.blocks_pg, player.steals_pg, player.fg_percentage, player.three_percentage, player.ft_percentage, player.minutes_pg]
-    
     puts "Here are #{player.name}'s 2015-16 stats: "
-    puts Terminal::Table.new rows: rows
+    puts Terminal::Table.new rows: player.stat_rows
   end
 
 end

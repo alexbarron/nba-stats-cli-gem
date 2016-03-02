@@ -12,7 +12,7 @@ class NbaStats::Player
 
   def self.create_from_collection(players_array)
     players_array.each do |player|
-      new_player = NbaStats::Player.new(player)
+      NbaStats::Player.new(player)
     end
   end
 
@@ -25,10 +25,15 @@ class NbaStats::Player
   end
 
   def add_player_stats
-    stats_hash = NbaStats::Scraper.get_player_stats(self)
+    stats_hash = NbaStats::Scraper.new.get_player_stats(self)
     stats_hash.each do |key,value|
       self.send("#{key}=", value)
     end
+  end
+
+  def stat_rows
+    rows = [["Points/Game", "Assists/Game", "Rebounds/Game", "Blocks/Game", "Steals/Game", "FG%", "3P%", "FT%", "Minutes/Game",]]
+    rows << [@points_pg, @assists_pg, @rebounds_pg, @blocks_pg, @steals_pg, @fg_percentage, @three_percentage, @ft_percentage, @minutes_pg]
   end
 
   def self.all

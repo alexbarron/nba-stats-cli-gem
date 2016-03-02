@@ -2,4 +2,6 @@
 
 require_relative '../lib/nba_stats'
 
+# puts "What year would you like stats for?"
+# year = gets.strip
 NbaStats::CLI.new.call
