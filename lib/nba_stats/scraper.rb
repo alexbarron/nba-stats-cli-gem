@@ -1,4 +1,4 @@
-class NbaStats::Scraper # Singleton
+class NbaStats::Scraper
   
   def initialize
     @teams = {}
